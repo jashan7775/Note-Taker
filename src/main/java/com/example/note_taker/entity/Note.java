@@ -1,9 +1,7 @@
 package com.example.note_taker.entity;
 
 import java.time.LocalDateTime;
-
 import org.hibernate.annotations.CreationTimestamp;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,7 +22,7 @@ public class Note {
 	@Column(length = 2000)
 	private String content;
 
-	@CreationTimestamp	
+	@CreationTimestamp
 	private LocalDateTime createdAt;
 
 	public Long getId() {
@@ -58,7 +56,5 @@ public class Note {
 	public void setCreatedAt(LocalDateTime createdAt) {
 		this.createdAt = createdAt;
 	}
-	
-	
 
 }
