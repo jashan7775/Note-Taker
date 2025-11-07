@@ -7,4 +7,6 @@ import com.example.note_taker.entity.Note;
 @Repository
 public interface NoteRepo extends JpaRepository<Note, Long> {
 
+	Object findByUsername(String username);
+
 }

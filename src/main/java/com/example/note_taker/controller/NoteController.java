@@ -1,6 +1,8 @@
 package com.example.note_taker.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import com.example.note_taker.Repo.NoteRepo;
 import com.example.note_taker.entity.Note;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class NoteController {
@@ -18,7 +21,11 @@ public class NoteController {
 
 	@GetMapping("/")
 	public String home(Model model) {
-		model.addAttribute("notes", noteRepo.findAll());
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String username = auth.getName();
+
+		// 🔹 Fetch notes for that user
+		model.addAttribute("notes", noteRepo.findByUsername(username));
 		return "index";
 	}
 
@@ -29,7 +36,11 @@ public class NoteController {
 	}
 
 	@PostMapping("/save")
-	public String saveNote(@ModelAttribute Note note) {
+	public String saveNote(@ModelAttribute Note note, HttpSession session) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String username = auth.getName(); // current username
+		System.out.println(username);
+		note.setUsername(username);
 		noteRepo.save(note);
 		return "redirect:/";
 	}
